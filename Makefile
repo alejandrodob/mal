@@ -18,7 +18,7 @@ mal_TEST_OPTS = --start-timeout 60 --test-timeout 120
 
 IMPLS = awk bash c clojure coffee cpp crystal cs erlang elixir es6 factor forth fsharp go groovy \
 	haskell java julia js lua make mal ocaml matlab miniMAL nim \
-	perl php ps python r racket rpython ruby rust scala swift vb guile
+	perl php ps python r racket rpython ruby rust scala swift vb guile my_python
 
 step0 = step0_repl
 step1 = step1_read_print
@@ -94,6 +94,7 @@ perl_STEP_TO_PROG =    perl/$($(1)).pl
 php_STEP_TO_PROG =     php/$($(1)).php
 ps_STEP_TO_PROG =      ps/$($(1)).ps
 python_STEP_TO_PROG =  python/$($(1)).py
+my_python_STEP_TO_PROG =  my_python/$($(1)).py
 r_STEP_TO_PROG =       r/$($(1)).r
 racket_STEP_TO_PROG =  racket/$($(1)).rkt
 rpython_STEP_TO_PROG = rpython/$($(1))
@@ -142,6 +143,7 @@ perl_RUNSTEP =    perl ../$(2) $(3)
 php_RUNSTEP =     php ../$(2) $(3)
 ps_RUNSTEP =      $(4)gs -q -I./ -dNODISPLAY -- ../$(2) $(3)$(4)
 python_RUNSTEP =  $(PYTHON) ../$(2) $(3)
+my_python_RUNSTEP =  $(PYTHON) ../$(2) $(3)
 r_RUNSTEP =       Rscript ../$(2) $(3)
 racket_RUNSTEP =  ../$(2) $(3)
 rpython_RUNSTEP = ../$(2) $(3)
