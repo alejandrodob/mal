@@ -19,6 +19,19 @@ def read_form(reader):
         return read_list(reader)
     if token == '\'':
         reader.next()
+        return ['quote', read_form(reader)]
+    if token == '`':
+        reader.next()
+        return ['quasiquote', read_form(reader)]
+    if token == '~':
+        reader.next()
+        return ['unquote', read_form(reader)]
+    if token == '~@':
+        reader.next()
+        return ['splice-unquote', read_form(reader)]
+    if token == '@':
+        reader.next()
+        return ['deref', read_form(reader)]
     return read_atom(reader)
 
 
@@ -29,6 +42,7 @@ def read_list(reader):
         next_token = read_form(reader)
         if next_token == EOF or next_token == ')': break
         the_list.append(next_token)
+    reader.next()
     return the_list
 
 
