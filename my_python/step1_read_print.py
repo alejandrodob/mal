@@ -1,4 +1,4 @@
-import sys
+import sys, traceback
 import reader
 import printer
 
@@ -20,9 +20,10 @@ def loop():
             user_input = raw_input("user> ")
             print REP(user_input)
         except EOFError:
-            print ""
-            print "Bye!"
+            print "\nBye!"
             sys.exit(0)
+        except Exception as e:
+            print "".join(traceback.format_exception(*sys.exc_info()))
 
 if __name__ == '__main__':
     loop()

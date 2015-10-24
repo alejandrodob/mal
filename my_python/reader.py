@@ -2,6 +2,9 @@ import re
 
 EOF = None
 
+class ParensMissmatch(Exception):
+    pass
+
 def read_str(string):
     tokens = tokenizer(string)
     reader = Reader(tokens)
@@ -17,6 +20,8 @@ def read_form(reader):
     token = reader.peek()
     if token == '(':
         return read_list(reader)
+    if token == ')':
+        raise ParensMissmatch("Unexpected ')'")
     if token == '\'':
         reader.next()
         return ['quote', read_form(reader)]
@@ -37,11 +42,12 @@ def read_form(reader):
 
 def read_list(reader):
     the_list = []
-    next_token = reader.next()
-    while next_token != ')':
-        next_token = read_form(reader)
-        if next_token == EOF or next_token == ')': break
-        the_list.append(next_token)
+    reader.next()
+    token = reader.peek()
+    while token != ')':
+        if token == EOF: raise ParensMissmatch("Missing ')'")
+        the_list.append(read_form(reader))
+        token = reader.peek()
     reader.next()
     return the_list
 
@@ -56,9 +62,7 @@ class Reader(object):
         self.pos = 0
 
     def next(self):
-        if self.pos + 1 > len(self.tokens):
-            return EOF
-        token = self.tokens[self.pos]
+        token = self.peek()
         self.pos += 1
         return token
 
