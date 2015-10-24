@@ -1,5 +1,5 @@
 import re
-from _types import List, Vector
+from _types import List, Vector, Hash
 
 EOF = None
 
@@ -27,6 +27,8 @@ def read_form(reader):
         return read_vector(reader)
     if token == ']':
         raise ParensMissmatch("Unexpected ']'")
+    if token == '{':
+        return read_hash(reader)
     if token == '\'':
         reader.next()
         return List(['quote', read_form(reader)])
@@ -62,6 +64,17 @@ def read_vector(reader):
     token = reader.peek()
     while token != ']':
         if token == EOF: raise ParensMissmatch("Missing ']'")
+        the_list.append(read_form(reader))
+        token = reader.peek()
+    reader.next()
+    return the_list
+
+def read_hash(reader):
+    the_list = Hash()
+    reader.next()
+    token = reader.peek()
+    while token != '}':
+        if token == EOF: raise ParensMissmatch("Missing '}'")
         the_list.append(read_form(reader))
         token = reader.peek()
     reader.next()
