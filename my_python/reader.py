@@ -44,6 +44,10 @@ def read_form(reader):
     if token == '@':
         reader.next()
         return List(['deref', read_form(reader)])
+    if token == '^':
+        reader.next()
+        meta = read_form(reader)
+        return List(['with-meta', read_form(reader), meta])
     return read_atom(reader)
 
 
