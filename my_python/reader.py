@@ -1,4 +1,5 @@
 import re
+from _types import List, Vector
 
 EOF = None
 
@@ -22,30 +23,45 @@ def read_form(reader):
         return read_list(reader)
     if token == ')':
         raise ParensMissmatch("Unexpected ')'")
+    if token == '[':
+        return read_vector(reader)
+    if token == ']':
+        raise ParensMissmatch("Unexpected ']'")
     if token == '\'':
         reader.next()
-        return ['quote', read_form(reader)]
+        return List(['quote', read_form(reader)])
     if token == '`':
         reader.next()
-        return ['quasiquote', read_form(reader)]
+        return List(['quasiquote', read_form(reader)])
     if token == '~':
         reader.next()
-        return ['unquote', read_form(reader)]
+        return List(['unquote', read_form(reader)])
     if token == '~@':
         reader.next()
-        return ['splice-unquote', read_form(reader)]
+        return List(['splice-unquote', read_form(reader)])
     if token == '@':
         reader.next()
-        return ['deref', read_form(reader)]
+        return List(['deref', read_form(reader)])
     return read_atom(reader)
 
 
 def read_list(reader):
-    the_list = []
+    the_list = List()
     reader.next()
     token = reader.peek()
     while token != ')':
         if token == EOF: raise ParensMissmatch("Missing ')'")
+        the_list.append(read_form(reader))
+        token = reader.peek()
+    reader.next()
+    return the_list
+
+def read_vector(reader):
+    the_list = Vector()
+    reader.next()
+    token = reader.peek()
+    while token != ']':
+        if token == EOF: raise ParensMissmatch("Missing ']'")
         the_list.append(read_form(reader))
         token = reader.peek()
     reader.next()
