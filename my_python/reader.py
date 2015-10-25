@@ -1,5 +1,5 @@
 import re
-from _types import List, Vector, Hash
+from _types import List, Vector, Hash, Symbol, Integer
 
 EOF = None
 
@@ -86,7 +86,11 @@ def read_hash(reader):
 
 
 def read_atom(reader):
-    return reader.next()
+    token = reader.next()
+    if token[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+        return Integer(token)
+    else:
+        return Symbol(token)
 
 
 class Reader(object):
