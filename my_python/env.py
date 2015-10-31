@@ -2,9 +2,11 @@ from _types import Symbol
 
 class Env(object):
 
-    def __init__(self, outer=None):
+    def __init__(self, outer=None, binds=[], exprs=[]):
         self.outer = outer
         self.data = {}
+        for symbol, expr in zip(binds, exprs):
+            self.set(symbol, expr)
 
     def set(self, key, value):
         self.data[key] = value
