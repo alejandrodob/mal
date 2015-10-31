@@ -35,6 +35,11 @@ def EVAL(ast, env):
             value = EVAL(ast[2], env)
             env.set(symbol, value)
             return value
+        elif function == 'do':
+            return_val = None
+            for exp in ast[1:]:
+                return_val = EVAL(exp, env)
+            return return_val
         else:
             evaluated = eval_ast(ast, env)
             return evaluated[0](*evaluated[1:])
