@@ -1,7 +1,7 @@
 import sys, traceback
 import reader
 import printer
-from _types import List, Symbol, Vector, Hash
+from _types import List, Symbol, Vector, Hash, Function
 from env import Env
 
 repl_env = Env()
@@ -18,11 +18,9 @@ def EVAL(ast, env):
     if type(ast) == List and len(ast) > 0:
         function = ast[0]
         if function == 'fn*':
-            def fn(*args):
-                bindings = ast[1]
-                closure_env = Env(outer=env, binds=bindings, exprs=args)
-                return EVAL(ast[2], closure_env)
-            return fn
+            bindings = ast[1]
+            body = ast[2]
+            return Function(Env, bindings, env, body, EVAL)
         elif function == 'let*':
             scoped_env = Env(env)
             bindings = ast[1]
