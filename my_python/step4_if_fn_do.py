@@ -1,14 +1,14 @@
 import sys, traceback
 import reader
 import printer
+import core
 from _types import List, Symbol, Vector, Hash, Function
 from env import Env
 
 repl_env = Env()
-repl_env.set('+', lambda a,b: a+b)
-repl_env.set('-', lambda a,b: a-b)
-repl_env.set('*', lambda a,b: a*b)
-repl_env.set('/', lambda a,b: int(a/b))
+
+for k, v in core.ns.items():
+    repl_env.set(Symbol(k), v)
 
 
 def READ(code):
