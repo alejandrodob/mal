@@ -16,6 +16,12 @@ def pr_str(data_structure):
         return '"' + data_structure.replace('"', '\\"') + '"'
     elif type(data_structure) == Keyword:
         return ':' + data_structure
+    elif data_structure is True:
+        return 'true'
+    elif data_structure is False:
+        return 'false'
+    elif data_structure is None:
+        return 'nil'
     else:
         result = str(data_structure)
     return result
