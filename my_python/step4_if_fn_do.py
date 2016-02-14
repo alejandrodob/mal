@@ -5,11 +5,8 @@ import core
 from _types import List, Symbol, Vector, Hash, Function
 from env import Env
 
-repl_env = Env()
 
-for k, v in core.ns.items():
-    repl_env.set(Symbol(k), v)
-
+repl_env = Env(binds=core.ns.keys(), exprs=core.ns.values())
 
 def READ(code):
     return reader.read_str(code)
