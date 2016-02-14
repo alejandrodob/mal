@@ -90,9 +90,9 @@ def read_atom(reader):
     if token[0] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
         return Integer(token)
     if token.startswith('"'):
-        return String(token)
+        return String(token[1:-1].replace('\\"', '"'))
     if token.startswith(':'):
-        return Keyword(token)
+        return Keyword(token[1:])
     if token == 'true':
         return True
     if token == 'false':
