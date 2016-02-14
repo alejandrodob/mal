@@ -40,6 +40,18 @@ def EVAL(ast, env):
             for exp in ast[1:]:
                 return_val = EVAL(exp, env)
             return return_val
+        elif function == 'if':
+            condition = EVAL(ast[1], env)
+            if_branch = ast[2]
+            if condition not in (False, None):
+                return EVAL(if_branch, env)
+            else:
+                else_branch = None
+                try:
+                    else_branch = ast[3]
+                except IndexError as e:
+                    pass
+                return EVAL(else_branch, env)
         else:
             evaluated = eval_ast(ast, env)
             return evaluated[0](*evaluated[1:])
