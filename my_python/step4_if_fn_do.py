@@ -6,8 +6,6 @@ from _types import List, Symbol, Vector, Hash, Function
 from env import Env
 
 
-repl_env = Env(binds=core.ns.keys(), exprs=core.ns.values())
-
 def READ(code):
     return reader.read_str(code)
 
@@ -58,9 +56,6 @@ def EVAL(ast, env):
 def PRINT(code):
     return printer.pr_str(code)
 
-def REP(code):
-    return PRINT(EVAL(READ(code), repl_env))
-
 def eval_ast(ast, env):
     if type(ast) == Symbol:
         return env.get(ast)
@@ -72,6 +67,13 @@ def eval_ast(ast, env):
         return Hash([EVAL(elem, env) for elem in ast])
     else:
         return ast
+
+
+def REP(code):
+    return PRINT(EVAL(READ(code), repl_env))
+
+repl_env = Env(binds=core.ns.keys(), exprs=core.ns.values())
+REP("(def! not (fn* (a) (if a false true)))")
 
 def loop():
     while True:
