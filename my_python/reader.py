@@ -93,6 +93,12 @@ def read_atom(reader):
         return String(token)
     if token.startswith(':'):
         return Keyword(token)
+    if token == 'true':
+        return True
+    if token == 'false':
+        return False
+    if token == 'nil':
+        return None
     return Symbol(token)
 
 
