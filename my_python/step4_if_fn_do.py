@@ -38,7 +38,7 @@ def EVAL(ast, env):
         elif function == 'if':
             condition = EVAL(ast[1], env)
             if_branch = ast[2]
-            if condition not in (False, None):
+            if condition is not False and condition is not None:
                 return EVAL(if_branch, env)
             else:
                 else_branch = None
