@@ -5,6 +5,10 @@ class Env(object):
     def __init__(self, outer=None, binds=[], exprs=[]):
         self.outer = outer
         self.data = {}
+        if '&' in binds:
+            i = binds.index('&')
+            binds = binds[:i] + binds[i+1:]
+            exprs = exprs[:i] + (exprs[i:],)
         for symbol, expr in zip(binds, exprs):
             self.set(symbol, expr)
 
